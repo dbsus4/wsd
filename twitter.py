@@ -86,8 +86,7 @@ print "  > getting data"
 
 data = issueRequestAndDecodeResponse(
   'GET',
-  (searchUrl + 'count=10&since_id=%s&q=%s' %
-   (lastId, urllib.quote(queryString))),
+  (searchUrl + 'count=1&q=%s' % (urllib.quote(queryString))),
   None,
   {'Host'            : host,
    'User-Agent'      : agent,
@@ -99,10 +98,10 @@ data = issueRequestAndDecodeResponse(
 print "   > displaying token"
 
 for tweet in data['statuses']:
-  print('    ' + tweet['user']['screen_name'])
-  print('    ' + tweet['created_at'])
+  #print('    ' + tweet['user']['screen_name'])
+  #print('    ' + tweet['created_at'])
   # Remove HTML escape sequences
   # and remap Unicode values to nearest ASCII equivalents
   print('    ' + unidecode(HTMLParser.HTMLParser().unescape(tweet['text'])))
 
-print(data['search_metadata']['max_id_str']) # Piped back to calling process
+#print(data['search_metadata']['max_id_str']) # Piped back to calling process
