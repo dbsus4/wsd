@@ -117,7 +117,7 @@ class Wsd:
 		self.modules		= p
 		self.asciiString	= [32 for i in range(140*w)]
 		self.matrix 		= [[False for i in range(h)] for j in range(140*w)]
-		self.pixel 			= [bytearray(3) for i in range(p*w*h)]
+		self.pixels 			= bytearray(p*w*h*3)
 		
 	def setText(self, t):
 		#self.asciiString  	= [None for i in range(140*self.moduleW)]
@@ -141,12 +141,13 @@ class Wsd:
 			r = (self.moduleW-1) - r
 
 		# pixels in previous panels + previous pixels in panel
-		for i in range(3):
-			self.pixel[b*mN + ( y*int(self.moduleW) + r )][i] = self.gamma[color[i]]
+		pindex = ( b*mN + ( y*int(self.moduleW) + r ) )*3
+		for i in range(3):	
+			self.pixels[pindex + i] = self.gamma[color[i]]
 
 
 	def loadPixels(self, offset=0):
-		for x in range(self.moduleW*self.modules):
+		for x in range(self.modules*self.moduleW):
 			for y in range(self.moduleH):
 				#if (): OUT OF RANGE -> pixel is off 
 				if (self.matrix[x + offset][y]):
@@ -161,10 +162,12 @@ class Wsd:
 	# 		time.sleep(0.5)
 
 	def display(self):
+		print 'displaying text'
 		#print(self.pixel)
-		self.spidev.write(self.pixel)
+		self.spidev.write(self.pixels)
 		self.spidev.flush()
 		time.sleep(0.001)
+		time.sleep(0.5)
 
 d = Wsd()
 d.setText('HELLO')
