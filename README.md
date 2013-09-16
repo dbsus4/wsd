@@ -1,4 +1,6 @@
 wsd
 ===
 
-rasppi python for the wsd project, a urban portable led display
+Rasppi python for the wsd_project, a urban portable led display
+
+pratipo.org with iDensitat for park(ing) day @Paris + @Barcelona, September 2013

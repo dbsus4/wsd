@@ -14,7 +14,7 @@
 # http://www.adafruit.com/products/597 Mini Thermal Receipt Printer
 # http://www.adafruit.com/products/600 Printer starter pack
 
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import subprocess, time, Image, socket
 
 nextInterval = 0.0
