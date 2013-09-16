@@ -15,7 +15,7 @@
 # http://www.adafruit.com/products/600 Printer starter pack
 
 import RPi.GPIO as GPIO
-import subprocess, time, Image, socket
+import subprocess, time, socket
 
 nextInterval = 0.0
 lastId = '1'   # State information passed to/from interval script

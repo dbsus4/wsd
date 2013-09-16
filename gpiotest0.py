@@ -24,14 +24,14 @@ print "%dx%d pixels" % img.size
 # LPD8806-specific conversion (7-bit color w/high bit set).
 gamma = bytearray(256)
 for i in range(256):
-	gamma[i] = 0x80 | int(pow(float(i) / 255.0, 2.5) * 127.0 + 0.5)
+	gamma[i] = int(pow(float(i) / 255.0, 2.5) * 255.0 + 0.5)
 
 # Create list of bytearrays, one for each column of image.
 # R, G, B byte per pixel, plus extra '0' byte at end for latch.
 print "Allocating..."
 column = [0 for x in range(width)]
 for x in range(width):
-	column[x] = bytearray(height * 3 + 1)
+	column[x] = bytearray(height * 3)
 
 # Convert 8-bit RGB image into column-wise GRB bytearray list.
 print "Converting..."
@@ -39,8 +39,8 @@ for x in range(width):
 	for y in range(height):
 		value = pixels[x, y]
 		y3 = y * 3
-		column[x][y3]     = gamma[value[1]]
-		column[x][y3 + 1] = gamma[value[0]]
+		column[x][y3]     = gamma[value[0]]
+		column[x][y3 + 1] = gamma[value[1]]
 		column[x][y3 + 2] = gamma[value[2]]
 
 
@@ -48,7 +48,7 @@ for x in range(width):
 print "Displaying..."
 while True:
 	for x in range(width):
-                spidev.write(column[x])
+        	spidev.write(column[x])
                 spidev.flush()
 		time.sleep(0.001)
-	time.sleep(0.5)
+		time.sleep(0.5)

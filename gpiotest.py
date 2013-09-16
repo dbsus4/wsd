@@ -7,9 +7,9 @@ import time
 dev 		= "/dev/spidev0.0"
 spidev 		= file(dev, "wb")
 prevTime 	= 0.0
-sel 			= True
+sel 		= True
 
-L = 5
+L = 10
 
 pixelA		= bytearray(L*3)
 for h in range(L):
@@ -25,21 +25,21 @@ for h in range(L):
 pixelB		= bytearray(L*3)
 for h in range(L):
 	i = h*3
-	pixelB[i+0] = int(0)
-
-	if h%2:
-		pixelB[i+1] = int(255)
+	if not h%2:
+		pixelB[i+0] = int(255)
 	else:
-		pixelB[i+1] = int(0)
+		pixelB[i+0] = int(0)
 
+	pixelB[i+1] = int(0)
 	pixelB[i+2] = int(0)
 
 def display():
+	#print "displaying..."
 	if(sel):
-		print pixelA
+		#print pixelA
 		spidev.write(pixelA)
 	else:
-		print pixelB
+		#print pixelB
 		spidev.write(pixelB)
 
 	spidev.flush()
