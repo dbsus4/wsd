@@ -9,7 +9,7 @@ spidev 		= file(dev, "wb")
 prevTime 	= 0.0
 sel 		= True
 
-L = 10
+L = 35*5
 
 pixelA		= bytearray(L*3)
 for h in range(L):

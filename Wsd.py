@@ -126,7 +126,7 @@ class Wsd:
 
 	def asciiToMatrix(self):
 		bits = [1,2,4,8,16,32,64,128]
-		print range(len(self.asciiString))
+		# print range(len(self.asciiString))
 		for char in range(len(self.asciiString)):
 			for col in range(self.moduleW):
 				for row in range(self.moduleH):
@@ -146,20 +146,20 @@ class Wsd:
 			self.pixels[pindex + i] = self.gamma[color[i]]
 
 
-	def loadPixels(self, offset=0):
+	def loadPixels(self, c, offset=0):
 		for x in range(self.modules*self.moduleW):
 			for y in range(self.moduleH):
 				#if (): OUT OF RANGE -> pixel is off 
 				if (self.matrix[x + offset][y]):
-					self.setPixel(x + offset, y, [255, 0 ,0])
+					self.setPixel(x + offset, y, c)
 				else:
 					self.setPixel(x + offset, y, [0, 0 ,0])
 		self.display()
 
-	# def rollPixels(self):
-	# 	for offset in range(self.moduleW*self.modules):
-	# 		self.loadPixels(offset)
-	# 		time.sleep(0.5)
+	def rollPixels(self):
+	 	for offset in range(self.moduleW*self.modules):
+	 		self.loadPixels(offset)
+	 		time.sleep(0.5)
 
 	def display(self):
 		print 'displaying text'
@@ -167,8 +167,17 @@ class Wsd:
 		self.spidev.write(self.pixels)
 		self.spidev.flush()
 		time.sleep(0.001)
-		time.sleep(0.5)
 
 d = Wsd()
-d.setText('HELLO')
-d.loadPixels()
+d.setText('gelocatil')
+while (True):
+	c = [255, 0, 0]
+	d.loadPixels(c)
+	time.sleep(1.0)
+	c = [0, 255, 0]
+	d.loadPixels(c)
+	time.sleep(1.0)
+	c = [0, 0, 255]
+	d.loadPixels(c)
+	time.sleep(1.0)
+
