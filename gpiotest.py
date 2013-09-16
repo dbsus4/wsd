@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-##import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 
 # Open SPI device
 dev 		= "/dev/spidev0.0"
-##spidev 		= file(dev, "wb")
+spidev 		= file(dev, "wb")
 prevTime 	= 0.0
 sel 			= True
 
@@ -37,12 +37,12 @@ for h in range(L):
 def display():
 	if(sel):
 		print pixelA
-		##spidev.write(pixelA)
+		spidev.write(pixelA)
 	else:
 		print pixelB
-		##spidev.write(pixelB)
+		spidev.write(pixelB)
 
-	##spidev.flush()
+	spidev.flush()
 	time.sleep(0.001)
 
 # main
