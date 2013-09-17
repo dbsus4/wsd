@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 import time
 
 class Wsd:
-	def __init__(self, h=7, w=5, p=20):
+	def __init__(self, m=5, h=7, w=5):
 		# Open SPI device
 		dev 		= "/dev/spidev0.0"
 		self.spidev = file(dev, "wb")
@@ -112,10 +112,10 @@ class Wsd:
 
 		self.moduleH		= h
 		self.moduleW		= w
-		self.modules		= p
+		self.modules		= m
 		self.asciiString	= [32 for i in range(140)]
 		self.binMatrix 		= [[False for i in range(h)] for j in range(140*w)]
-		self.pixels 		= bytearray(p*w*h*3)
+		self.pixels 		= bytearray(m*w*h*3)
 		
 	def setText(self, t):
 		self.asciiString  = [ord(c) for c in t]
@@ -147,7 +147,7 @@ class Wsd:
 		for x in range(self.modules*self.moduleW):
 			for y in range(self.moduleH):
 
-				if ( (x+offset)>=len(binMatrix) ): #OUT OF RANGE -> pixel is off 
+				if ( (x+offset)>=len(self.binMatrix) ): #OUT OF RANGE -> pixel is off 
 					self.setPixel(x, y, [0, 0 ,0])
 				else:
 					if (self.binMatrix[x + offset][y]):
@@ -159,7 +159,7 @@ class Wsd:
 	def rollPixels(self):
 	 	for offset in range(self.moduleW*len(self.asciiString)):
 	 		self.loadPixels([0, 255, 0],offset)
-	 		time.sleep(0.5)
+	 		time.sleep(0.2)
 
 	def display(self):
 		# print 'displaying text'
@@ -168,18 +168,7 @@ class Wsd:
 		time.sleep(0.001)
 
 
-d = Wsd()
-d.setText('gelocatil')
-while (True):
-	rollPixels()
-
-	# c = [255, 0, 0]
-	# d.loadPixels(c)
-	# time.sleep(1.0)
-	# c = [0, 255, 0]
-	# d.loadPixels(c)
-	# time.sleep(1.0)
-	# c = [0, 0, 255]
-	# d.loadPixels(c)
-	# time.sleep(1.0)
-
+# d = Wsd()
+# d.setText('gelocatil')
+# while (True):
+# 	d.rollPixels()
