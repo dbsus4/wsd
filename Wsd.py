@@ -4,9 +4,7 @@ import RPi.GPIO as GPIO
 import time
 
 class Wsd:
-	
 	def __init__(self, h=7, w=5, p=20):
-
 		# Open SPI device
 		dev 		= "/dev/spidev0.0"
 		self.spidev = file(dev, "wb")
@@ -115,22 +113,21 @@ class Wsd:
 		self.moduleH		= h
 		self.moduleW		= w
 		self.modules		= p
-		self.asciiString	= [32 for i in range(140*w)]
-		self.matrix 		= [[False for i in range(h)] for j in range(140*w)]
-		self.pixels 			= bytearray(p*w*h*3)
+		self.asciiString	= [32 for i in range(140)]
+		self.binMatrix 		= [[False for i in range(h)] for j in range(140*w)]
+		self.pixels 		= bytearray(p*w*h*3)
 		
 	def setText(self, t):
-		#self.asciiString  	= [None for i in range(140*self.moduleW)]
 		self.asciiString  = [ord(c) for c in t]
-		self.asciiToMatrix()
+		self.asciiTobinMatrix()
 
-	def asciiToMatrix(self):
+	def asciiTobinMatrix(self):
 		bits = [1,2,4,8,16,32,64,128]
 		# print range(len(self.asciiString))
 		for char in range(len(self.asciiString)):
 			for col in range(self.moduleW):
 				for row in range(self.moduleH):
-					self.matrix[char*self.moduleW + col][row]= bool( self.asciiTable[self.asciiString [char]-32][col] & bits[row] )
+					self.binMatrix[char*self.moduleW + col][row]= bool( self.asciiTable[self.asciiString [char]-32][col] & bits[row] )
 
 	def setPixel(self, x, y, color):
 		mN = self.moduleH*self.moduleW
@@ -149,35 +146,40 @@ class Wsd:
 	def loadPixels(self, c, offset=0):
 		for x in range(self.modules*self.moduleW):
 			for y in range(self.moduleH):
-				#if (): OUT OF RANGE -> pixel is off 
-				if (self.matrix[x + offset][y]):
-					self.setPixel(x + offset, y, c)
+
+				if ( (x+offset)>=len(binMatrix) ): #OUT OF RANGE -> pixel is off 
+					self.setPixel(x, y, [0, 0 ,0])
 				else:
-					self.setPixel(x + offset, y, [0, 0 ,0])
+					if (self.binMatrix[x + offset][y]):
+						self.setPixel(x, y, c)
+					else:
+						self.setPixel(x, y, [0, 0 ,0])
 		self.display()
 
 	def rollPixels(self):
-	 	for offset in range(self.moduleW*self.modules):
-	 		self.loadPixels(offset)
+	 	for offset in range(self.moduleW*len(self.asciiString)):
+	 		self.loadPixels([0, 255, 0],offset)
 	 		time.sleep(0.5)
 
 	def display(self):
-		print 'displaying text'
-		#print(self.pixel)
+		# print 'displaying text'
 		self.spidev.write(self.pixels)
 		self.spidev.flush()
 		time.sleep(0.001)
 
+
 d = Wsd()
 d.setText('gelocatil')
 while (True):
-	c = [255, 0, 0]
-	d.loadPixels(c)
-	time.sleep(1.0)
-	c = [0, 255, 0]
-	d.loadPixels(c)
-	time.sleep(1.0)
-	c = [0, 0, 255]
-	d.loadPixels(c)
-	time.sleep(1.0)
+	rollPixels()
+
+	# c = [255, 0, 0]
+	# d.loadPixels(c)
+	# time.sleep(1.0)
+	# c = [0, 255, 0]
+	# d.loadPixels(c)
+	# time.sleep(1.0)
+	# c = [0, 0, 255]
+	# d.loadPixels(c)
+	# time.sleep(1.0)
 
