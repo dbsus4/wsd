@@ -49,8 +49,8 @@ while(True):
     #subprocess.call(["python", "test.py"])
 
     twit = getTwit()
-    if result is not None:
-      body = result.rstrip('\r\n')
+    if twit is not None:
+      body = twit.rstrip('\r\n')
       display.setText(body)
       display.rollPixels()
 

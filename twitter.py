@@ -68,7 +68,7 @@ def issueRequestAndDecodeResponse(method, url, body, headers):
 
 
 # Mainline code. -----------------------------------------------------------
-print " > getting token"
+#print " > getting token"
 
 # Get access token. --------------------------------------------------------
 token = issueRequestAndDecodeResponse(
@@ -82,7 +82,7 @@ token = issueRequestAndDecodeResponse(
 
 
 # Perform search. ----------------------------------------------------------
-print "  > getting data"
+#print "  > getting data"
 
 data = issueRequestAndDecodeResponse(
   'GET',
@@ -95,13 +95,13 @@ data = issueRequestAndDecodeResponse(
 
 
 # Display results. ---------------------------------------------------------
-print "   > displaying token"
+#print "   > displaying token"
 
 for tweet in data['statuses']:
   #print('    ' + tweet['user']['screen_name'])
   #print('    ' + tweet['created_at'])
   # Remove HTML escape sequences
   # and remap Unicode values to nearest ASCII equivalents
-  print('    ' + unidecode(HTMLParser.HTMLParser().unescape(tweet['text'])))
+  print(unidecode(HTMLParser.HTMLParser().unescape(tweet['text'])))
 
 #print(data['search_metadata']['max_id_str']) # Piped back to calling process
