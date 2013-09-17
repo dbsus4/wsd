@@ -18,8 +18,8 @@ import RPi.GPIO as GPIO
 import subprocess, time, socket
 from Wsd import *
 
-prevtime = 0.0
-interval = 10
+prevTime = 0.0
+interval = 10.0
 display = Wsd()
 
 # Called at periodic intervals (30 seconds by default).
@@ -48,11 +48,10 @@ while(True):
     print "next twitter query"
     #subprocess.call(["python", "test.py"])
 
-    #twit = getTwit()
-    #if result is not None:
-      #body = result.rstrip('\r\n')
-    
-    display.setText('gelocatil')
-    display.rollPixels()
+    twit = getTwit()
+    if result is not None:
+      body = result.rstrip('\r\n')
+      display.setText(body)
+      display.rollPixels()
 
 
