@@ -16,18 +16,20 @@
 
 import RPi.GPIO as GPIO
 import subprocess, time, socket
+from Wsd import *
 
-nextInterval = 0.0
-lastId = '1'   # State information passed to/from interval script
-
+prevtime = 0.0
+interval = 10
+display = Wsd()
 
 # Called at periodic intervals (30 seconds by default).
 # Invokes twitter script.
-def interval():
-  p = subprocess.Popen(["python", "twitter.py", str(lastId)],stdout=subprocess.PIPE)
-  r = p.communicate()[0] # Script pipes back lastId, returned to main
-  print r
-  return r
+def getTwit():
+  p = subprocess.Popen(["python", "twitter.py"],stdout=subprocess.PIPE)
+  # script pipes back twit body
+  twit = p.communicate()[0] 
+  print twit
+  return twit
 
 # Initialization
 
@@ -40,17 +42,17 @@ def interval():
 # Main loop
 while(True):
   t = time.time()
-
-  # Every 30 seconds, run Twitter scripts.  'lastId' is passed around
-  # to preserve state between invocations.  Probably simpler to do an
-  # import thing.
-  if t > nextInterval:
+  if (t - prevTime > interval):
+    prevTime = t
+   
     print "next twitter query"
-    nextInterval = t + 15.0
-    
     #subprocess.call(["python", "test.py"])
 
-    result = interval()
-    if result is not None:
-      lastId = result.rstrip('\r\n')
+    #twit = getTwit()
+    #if result is not None:
+      #body = result.rstrip('\r\n')
+    
+    display.setText('gelocatil')
+    display.rollPixels()
+
 
