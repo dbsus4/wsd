@@ -1,30 +1,13 @@
 #!/usr/bin/python
 
-# This is a Python port of Adafruit's "Gutenbird" sketch for Arduino.
-# Polls one or more Twitter accounts for changes, displaying updates
-# on attached thermal printer.
-# Written by Adafruit Industries.  MIT license.
-#
-# Required hardware includes an Internet-connected system with Python
-# (such as Raspberry Pi) and an Adafruit Mini Thermal Receipt printer
-# and all related power supplies and cabling.
-# Required software includes Adafruit_Thermal and PySerial libraries.
-#
-# Resources:
-# http://www.adafruit.com/products/597 Mini Thermal Receipt Printer
-# http://www.adafruit.com/products/600 Printer starter pack
-#
-# Uses Twitter 1.1 API application-only authentication.  This
-# REQUIRES a Twitter account and some account configuration.  Start
-# at dev.twitter.com, sign in with your Twitter credentials, select
-# "My Applications" from the avatar drop-down menu at the top right,
-# then "Create a new application."  Provide a name, description,
-# placeholder URL and complete the captcha, after which you'll be
-# provided a "consumer key" and "consumer secret" for your app.
-# Copy these strings to the globals below, and configure the search
-# string to your liking.  DO NOT SHARE your consumer key or secret!
-# If you put code on Github or other public repository, replace them
-# with dummy strings.
+# wsd project main script
+
+# hardware: ws2801 led strips + raspberry pi + internet adapter
+# software pulls twits from an 'admin' (twits and retwits) and 
+# displays the last result through the led strip 
+
+# Written by Pratipo.org, hightly based on Adafruit's IoT Pinter. MIT license.
+# MUST BE RUN AS ROOT (due to GPIO access)
 
 import base64, HTMLParser, httplib, json, sys, urllib, zlib
 from unidecode import unidecode
@@ -41,7 +24,6 @@ consumer_secret = 'nTBsNRjrp87r9GsVYFKdt5dvV0TjeGesGIFR0ZWXWsA'
 # for options and syntax.  Funny characters do NOT need to be URL
 # encoded here -- urllib takes care of that.
 queryString = 'pratipo'
-
 
 # Other globals.  You probably won't need to change these. -----------------
 host      = 'api.twitter.com'

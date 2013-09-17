@@ -1,18 +1,13 @@
 #!/usr/bin/python
 
-# Main script for Adafruit Internet of Things Printer 2.  Monitors button
-# for taps and holds, performs periodic actions (Twitter polling by default)
-# and daily actions (Sudoku and weather by default).
-# Written by Adafruit Industries.  MIT license.
-#
+# wsd project main script
+
+# hardware: ws2801 led strips + raspberry pi + internet adapter
+# software pulls twits from an 'admin' (twits and retwits) and 
+# displays the last result through the led strip 
+
+# Written by Pratipo.org, hightly based on Adafruit's IoT Pinter. MIT license.
 # MUST BE RUN AS ROOT (due to GPIO access)
-#
-# Required software includes Adafruit_Thermal, Python Imaging and PySerial
-# libraries. Other libraries used are part of stock Python install.
-#
-# Resources:
-# http://www.adafruit.com/products/597 Mini Thermal Receipt Printer
-# http://www.adafruit.com/products/600 Printer starter pack
 
 import RPi.GPIO as GPIO
 import subprocess, time, socket
@@ -31,15 +26,11 @@ def getTwit():
   print twit
   return twit
 
-# Initialization
-
-# Use Broadcom pin numbers (not Raspberry Pi pin numbers) for GPIO
- # GPIO.setmode(GPIO.BCM)
-
-# Processor load is heavy at startup; wait a moment to avoid stalling during greeting.
-#time.sleep(60)
-
 # Main loop
+
+#idle until processor load settles
+time.sleep(60)
+
 while(True):
   t = time.time()
   if (t - prevTime > interval):
@@ -51,6 +42,8 @@ while(True):
     twit = getTwit()
     if twit is not None:
       body = twit.rstrip('\r\n')
+      body = body.replace('#','')
+      #body = body.upper()
       display.setText(body)
       display.rollPixels()
 
