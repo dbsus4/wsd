@@ -191,7 +191,7 @@ class Wsd:
 						if (x < self.moduleW*11):
 							# first 11 modules are GBR :$
 							c = [color[1],color[2],color[0]]
-						elif:
+						else:
 							# last 9 modules are BRG :$
 							c = [color[2],color[0],color[1]]
 						#end fix
