@@ -36,7 +36,7 @@ while(True):
   #if (t - prevTime > interval):
     #prevTime = t
 
-    display.setText('HELLO PARIS! testing the urban Word Space Display. Twit \#Eclectis to be displayed on the street!!!')
+    display.setText('HELLO PARIS! TWIT #Eclectis TO BE DISPLAYED ON THE STREET!!!')
     display.rollPixels()
    
     print "next twitter query"

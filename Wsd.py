@@ -215,7 +215,7 @@ class Wsd:
 	 		time.sleep(0.05)
 
 
-d = Wsd()
-d.setText('HELLO PARIS! testing the urban Word Space Display. Twit \#Eclectis to go on the street!!!')
-while (True):
-	d.rollPixels()
+# d = Wsd()
+# d.setText('HELLO PARIS! testing the urban Word Space Display. Twit #Eclectis to go on the street!!!')
+# while (True):
+# 	d.rollPixels()
