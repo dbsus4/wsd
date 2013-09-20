@@ -210,9 +210,9 @@ class Wsd:
 			c = [0,255,0]
 		if ci == 2:
 			c = [0,0,255]
-	 	for offset in range(self.moduleW*len(self.asciiString)):
+	 	for offset in range(self.moduleW*len(self.asciiString + 10)):
 			self.loadPixels(c,offset)
-	 		time.sleep(0.05)
+	 		time.sleep(0.035)
 
 
 # d = Wsd()
