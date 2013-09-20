@@ -185,16 +185,16 @@ class Wsd:
 					self.setPixel(x, y, [0, 0 ,0])
 				else:
 					if (self.binMatrix[x + offset][y]):
-						#color = [255,0,0]
+						c = [0,0,0]
 						# fix diferent color schema in the last 9 modules
 						#remap R G B chanels
-						# if (x < self.moduleW*11):
-						# 	# first 11 modules are GBR :$
-						# 	c = [color[1],color[2],color[0]]
-						# else:
-						# 	# last 9 modules are BRG :$
-						# 	c = [color[2],color[0],color[1]]
-						# #end fix
+						if (x < self.moduleW*11):
+							# first 11 modules are GBR :$
+							c = [color[1],color[2],color[0]]
+						else:
+							# last 9 modules are BRG :$
+							c = [color[2],color[0],color[1]]
+						#end fix
 
 						self.setPixel(x, y, color)
 					else:
