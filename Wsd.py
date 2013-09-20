@@ -196,7 +196,7 @@ class Wsd:
 							c = [color[2],color[0],color[1]]
 						#end fix
 
-						self.setPixel(x, y, color)
+						self.setPixel(x, y, c)
 					else:
 						self.setPixel(x, y, [0, 0 ,0])
 		self.display()
