@@ -203,7 +203,7 @@ class Wsd:
 
 	def rollPixels(self):
 		c = [0,0,0]
-		ci = 0 #andom.randint(0,2)
+		ci = random.randint(0,2)
 		if ci == 0:
 			c = [255,0,0]
 		if ci == 1:
