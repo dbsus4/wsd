@@ -43,7 +43,6 @@ for x in range(width):
 		column[x][y3 + 1] = gamma[value[1]]
 		column[x][y3 + 2] = gamma[value[2]]
 
-
 # Then it's a trivial matter of writing each column to the SPI port.
 print "Displaying..."
 while True:

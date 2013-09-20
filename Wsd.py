@@ -10,10 +10,10 @@
 # MUST BE RUN AS ROOT (due to GPIO access)
 
 import RPi.GPIO as GPIO
-import time
+import time, random
 
 class Wsd:
-	def __init__(self, m=5, h=7, w=5):
+	def __init__(self, o=0, m=20, h=7, w=5):
 		# Open SPI device
 		dev 		= "/dev/spidev0.0"
 		self.spidev = file(dev, "wb")
@@ -119,11 +119,20 @@ class Wsd:
 				[0x04,0x02,0x04,0x08,0x04]   # ~ 0x7e 126
 			]
 
+		self.orientation	= o
+		self.modules		= m
 		self.moduleH		= h
 		self.moduleW		= w
-		self.modules		= m
-		self.asciiString	= [32 for i in range(140)]
-		self.binMatrix 		= [[False for i in range(h)] for j in range(140*w)]
+		self.mN 		= self.moduleH*self.moduleW
+
+		self.preOffset		= self.moduleW * 10
+		
+		self.asciiString	= [32 for i in range(140 + 10)]
+		if (self.orientation == 0):
+			self.binMatrix 	= [[0 for i in range(h)] for j in range((140+10)*(w+1))]
+		#TODO
+		#elif (self.orientation == 1):
+		#	self.binMatrix 	= [[0 for i in range(w)] for j in range(140*(h+1))]
 		self.pixels 		= bytearray(m*w*h*3)
 		
 	def setText(self, t):
@@ -134,12 +143,23 @@ class Wsd:
 		bits = [1,2,4,8,16,32,64,128]
 		# print range(len(self.asciiString))
 		for char in range(len(self.asciiString)):
-			for col in range(self.moduleW):
-				for row in range(self.moduleH):
-					self.binMatrix[char*self.moduleW + col][row]= bool( self.asciiTable[self.asciiString [char]-32][col] & bits[row] )
+
+			if(self.orientation == 0):
+				for col in range(self.moduleW):
+					for row in range(self.moduleH):
+						self.binMatrix[char*self.moduleW + col + char  + self.preOffset][row] = bool( self.asciiTable[self.asciiString [char]-32][col] & bits[row] )
+			
+			#TODO -> vertical assembly
+			#elif(self.orientation == 1):
+			#	for col in range(self.moduleW):
+			#		for row in range(self.moduleH):
+			#			self.binMatrix[char*self.moduleW + col][row]= bool( self.asciiTable[self.asciiString [char]-32][col] & bits[row] )
+
+
+
 
 	def setPixel(self, x, y, color):
-		mN = self.moduleH*self.moduleW
+		
 		b = x/int(self.moduleW)
 
 		r = x%self.moduleW 			# division left-over part
@@ -147,28 +167,9 @@ class Wsd:
 			r = (self.moduleW-1) - r
 
 		# pixels in previous panels + previous pixels in panel
-		pindex = ( b*mN + ( y*int(self.moduleW) + r ) )*3
+		pindex = ( b*self.mN + ( y*int(self.moduleW) + r ) )*3
 		for i in range(3):	
 			self.pixels[pindex + i] = self.gamma[color[i]]
-
-
-	def loadPixels(self, c, offset=0):
-		for x in range(self.modules*self.moduleW):
-			for y in range(self.moduleH):
-
-				if ( (x+offset)>=len(self.binMatrix) ): #OUT OF RANGE -> pixel is off 
-					self.setPixel(x, y, [0, 0 ,0])
-				else:
-					if (self.binMatrix[x + offset][y]):
-						self.setPixel(x, y, c)
-					else:
-						self.setPixel(x, y, [0, 0 ,0])
-		self.display()
-
-	def rollPixels(self):
-	 	for offset in range(self.moduleW*len(self.asciiString)):
-	 		self.loadPixels([0, 255, 0],offset)
-	 		time.sleep(0.2)
 
 	def display(self):
 		# print 'displaying text'
@@ -176,8 +177,45 @@ class Wsd:
 		self.spidev.flush()
 		time.sleep(0.001)
 
+	def loadPixels(self, color, offset=0):
+		for x in range(self.modules*self.moduleW):
+			for y in range(self.moduleH):
 
-# d = Wsd()
-# d.setText('gelocatil')
-# while (True):
-# 	d.rollPixels()
+				if ( (x+offset)>=len(self.binMatrix) ): #OUT OF RANGE -> pixel is off 
+					self.setPixel(x, y, [0, 0 ,0])
+				else:
+					if (self.binMatrix[x + offset][y]):
+						color = [0,0,0]
+						# fix diferent color schema in the last 9 modules
+						#remap R G B chanels
+						if (x < self.moduleW*11):
+							# first 11 modules are GBR :$
+							c = [color[1],color[2],color[0]]
+						elif:
+							# last 9 modules are BRG :$
+							c = [color[2],color[0],color[1]]
+						#end fix
+
+						self.setPixel(x, y, c)
+					else:
+						self.setPixel(x, y, [0, 0 ,0])
+		self.display()
+
+	def rollPixels(self):
+		c = [0,0,0]
+		ci = random.randint(0,2)
+		if ci == 0:
+			c = [255,0,0]
+		if ci == 1:
+			c = [0,255,0]
+		if ci == 2:
+			c = [0,0,255]
+	 	for offset in range(self.moduleW*len(self.asciiString)):
+			self.loadPixels(c,offset)
+	 		time.sleep(0.2)
+
+
+d = Wsd()
+d.setText('HELLO PARIS! testing the urban Word Space Display. Twit hashtagPKDECLICTIS to go on the street!!!')
+while (True):
+	d.rollPixels()

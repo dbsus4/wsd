@@ -43,7 +43,7 @@ def display():
 		spidev.write(pixelB)
 
 	spidev.flush()
-	time.sleep(0.001)
+	time.sleep(0.005)
 
 # main
 while(True):
