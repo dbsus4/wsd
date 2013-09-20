@@ -32,17 +32,19 @@ def getTwit():
 time.sleep(60)
 
 while(True):
-  t = time.time()
-  if (t - prevTime > interval):
-    prevTime = t
+  #t = time.time()
+  #if (t - prevTime > interval):
+    #prevTime = t
+
+    display.setText('HELLO PARIS! testing the urban Word Space Display. Twit \#Eclectis to be displayed on the street!!!')
+    display.rollPixels()
    
     print "next twitter query"
     #subprocess.call(["python", "test.py"])
-
     twit = getTwit()
     if twit is not None:
       body = twit.rstrip('\r\n')
-      body = body.replace('#','')
+      #body = body.replace('#','')
       #body = body.upper()
       display.setText(body)
       display.rollPixels()

@@ -212,10 +212,10 @@ class Wsd:
 			c = [0,0,255]
 	 	for offset in range(self.moduleW*len(self.asciiString)):
 			self.loadPixels(c,offset)
-	 		time.sleep(0.1)
+	 		time.sleep(0.05)
 
 
 d = Wsd()
-d.setText('HELLO PARIS! testing the urban Word Space Display. Twit hashtagPKDECLICTIS to go on the street!!!')
+d.setText('HELLO PARIS! testing the urban Word Space Display. Twit \#Eclectis to go on the street!!!')
 while (True):
 	d.rollPixels()
