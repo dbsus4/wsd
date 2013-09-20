@@ -23,7 +23,7 @@ consumer_secret = 'nTBsNRjrp87r9GsVYFKdt5dvV0TjeGesGIFR0ZWXWsA'
 # boolean operators.  See http://dev.twitter.com/docs/using-search
 # for options and syntax.  Funny characters do NOT need to be URL
 # encoded here -- urllib takes care of that.
-queryString = 'pratipo'
+queryString = 'from:pratipo'
 
 # Other globals.  You probably won't need to change these. -----------------
 host      = 'api.twitter.com'
