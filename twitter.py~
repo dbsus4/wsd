@@ -86,4 +86,4 @@ for tweet in data['statuses']:
   # Remove HTML escape sequences
   # and remap Unicode values to nearest ASCII equivalents
   print(unidecode(HTMLParser.HTMLParser().unescape(tweet['text'])))
-  #print(data['search_metadata']['max_id_str']) # Piped back to calling process
+  print(data['search_metadata']['max_id_str']) # Piped back to calling process
