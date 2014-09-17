@@ -18,7 +18,7 @@ class Twitter:
 		self.consumer_key    = '4pAHhcZkY3dSFGl4yse99g'
 		self.consumer_secret = 'nTBsNRjrp87r9GsVYFKdt5dvV0TjeGesGIFR0ZWXWsA'
 
-		self.queryString = 'from:adafruit OR from:eldiarioes'
+		self.queryString = 'from:fredforcat OR from:Lulz_Es OR from:Maria_kny OR from:Lucha_x_ti OR from:HiginiaRoig OR from:RiuYashira OR from:Nitsuga000 OR from:DMarzal OR from:kolontai1959 OR from:adestemps OR from:Mitrahus OR from:IbaiKNY OR from:alberts1986 OR from:jordisalvia OR from:Xavieret_Bonet OR from:noticiessirius OR from:xmonge OR from:aritzcirbian OR from:toret OR from:AlephPukk OR from:patxigu OR from:jordiborras OR from:okokitsme'
 
 		self.host      = 'api.twitter.com'
 		self.authUrl   = '/oauth2/token'
@@ -73,8 +73,9 @@ class Twitter:
 	#### UTILS
 	# remove urls from body
 	def urlFreeBody(self, tweet):
-		url  = tweet['entities']['urls'][0]['url']
 		body = unidecode(HTMLParser.HTMLParser().unescape(tweet['text']))
-		body = re.sub(url, '', body)
+		if len(tweet['entities']['urls']) > 0:
+			for url in tweet['entities']['urls']:
+				body = re.sub(url['url'], '', body)
 		return body
 
