@@ -19,7 +19,6 @@ display = Wsd2()
 time.sleep(10)
 display.setText('#wsd by idensitat+pratipo')
 display.rollPixels(True)
-time.sleep(0.01)
 
 prev = ""
 
