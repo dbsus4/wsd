@@ -13,7 +13,7 @@ import RPi.GPIO as GPIO
 import time, random
 
 class Wsd2:
-	def __init__(self, m=28, h=7, w=5):
+	def __init__(self, m=30, h=7, w=5):
 		# Open SPI device
 		dev 		= "/dev/spidev0.0"
 		self.spidev 	= file(dev, "wb")
@@ -231,11 +231,11 @@ class Wsd2:
 						c = [0,0,0]
 						# fix diferent color schema in the last 9 modules
 						#remap R G B chanels
-						if (x < self.moduleW*13):
+						if (x < self.moduleW*12):
 							# first 11 modules are GBR :$
 							c = [color[1],color[2],color[0]]
 						else:
-							# last 9 modules are BRG :$
+							# last modules are BRG :$
 							c = [color[2],color[0],color[1]]
 						#end fix
 
@@ -276,8 +276,8 @@ class Wsd2:
 		seedColor = 0
 		bandwidth = 0
 
-		self.loadPixels(seedColor, bandwidth, self.moduleW * 7)
-	 		time.sleep(self.lapse*300)
+		self.loadPixels(seedColor, bandwidth, 0)
+	 	time.sleep(self.lapse*300)
 
 #display = Wsd2()
 #display.setText("Practicas artisticas y redes")

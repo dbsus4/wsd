@@ -18,7 +18,7 @@ class Twitter:
 		self.consumer_key    = '4pAHhcZkY3dSFGl4yse99g'
 		self.consumer_secret = 'nTBsNRjrp87r9GsVYFKdt5dvV0TjeGesGIFR0ZWXWsA'
 
-		self.queryString = 'from:fredforcat OR from:Lulz_Es OR from:Maria_kny OR from:Lucha_x_ti OR from:HiginiaRoig OR from:RiuYashira OR from:Nitsuga000 OR from:DMarzal OR from:kolontai1959 OR from:adestemps OR from:Mitrahus OR from:IbaiKNY OR from:alberts1986 OR from:jordisalvia OR from:Xavieret_Bonet OR from:noticiessirius OR from:xmonge OR from:aritzcirbian OR from:toret OR from:AlephPukk OR from:patxigu OR from:jordiborras OR from:okokitsme'
+		self.queryString = '#TerritoriGuiri'
 
 		self.host      = 'api.twitter.com'
 		self.authUrl   = '/oauth2/token'
@@ -49,7 +49,7 @@ class Twitter:
 		# TODO add count!!!!
 		data = self.issueRequestAndDecodeResponse(
 			'GET',
-			(self.searchUrl + 'count=10&q=%s' % (urllib.quote(self.queryString))),
+			(self.searchUrl + 'count=1&q=%s' % (urllib.quote(self.queryString))),
 			None,
 			{'Host'           : self.host,
 			'User-Agent'      : self.agent,
@@ -62,6 +62,7 @@ class Twitter:
 		data = self.query()
 		tweet = data['statuses'][0]
 		body = self.urlFreeBody(tweet)
+		body = self.hashtagFreeBody(tweet)
 		body.rstrip('\r\n') #.upper()
 		return body
 
@@ -79,3 +80,9 @@ class Twitter:
 				body = re.sub(url['url'], '', body)
 		return body
 
+	def hashtagFreeBody(self, tweet):
+		body = unidecode(HTMLParser.HTMLParser().unescape(tweet['text']))
+		if len(tweet['entities']['hashtags']) > 0:
+			for ht in tweet['entities']['hashtags']:
+				body = re.sub('#'+ht['text'], '', body)
+		return body
