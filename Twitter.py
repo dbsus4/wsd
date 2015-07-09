@@ -61,8 +61,7 @@ class Twitter:
 	def getNewest(self):
 		data = self.query()
 		tweet = data['statuses'][0]
-		body = self.urlFreeBody(tweet)
-		body = self.hashtagFreeBody(tweet)
+		body = self.hashurlFreeBody(tweet)
 		body.rstrip('\r\n') #.upper()
 		return body
 
@@ -73,15 +72,12 @@ class Twitter:
 
 	#### UTILS
 	# remove urls from body
-	def urlFreeBody(self, tweet):
+	def hashurlFreeBody(self, tweet):
 		body = unidecode(HTMLParser.HTMLParser().unescape(tweet['text']))
 		if len(tweet['entities']['urls']) > 0:
 			for url in tweet['entities']['urls']:
 				body = re.sub(url['url'], '', body)
-		return body
 
-	def hashtagFreeBody(self, tweet):
-		body = unidecode(HTMLParser.HTMLParser().unescape(tweet['text']))
 		if len(tweet['entities']['hashtags']) > 0:
 			for ht in tweet['entities']['hashtags']:
 				body = re.sub('#'+ht['text'], '', body)

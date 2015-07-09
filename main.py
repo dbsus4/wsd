@@ -33,18 +33,18 @@ while(True):
 			print('fresh twit' + body)	
 			#write new twit to file
 			file = open('frases.txt', 'a')
-			file.write(body) #+'\n')
+			file.write(body+'\n')
 			file.close()
+			prev = body
 	
 		else:
 			file = open('frases.txt', 'r')
 			lines = file.read().splitlines()
 			body =random.choice(lines)
-		
+			file.close()
 		
 			print('random twit' + body)	
 
-		prev = body
 
 		display.setText(body)
 		display.rollPixels(True)
