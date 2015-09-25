@@ -18,7 +18,7 @@ class Wsd2:
 		dev 		= "/dev/spidev0.0"
 		self.spidev 	= file(dev, "wb")
 
-		self.lapse 	= 0.01
+		self.lapse 	= 0.1
 		self.tick = 0
 		
 		self.gamma 	= bytearray(256)
